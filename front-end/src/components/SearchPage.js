@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
 
+import companies from '../data/companies';
+
 class SearchPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      companies
+    };
+  }
+
   componentDidMount() {
     this.inputSearch.focus();
   }
+
   render() {
+    let {companies} = this.state;
+
+    //console.log({companies});
+
     return (
       <div className="bt b--black-10 black-70 pa2 pa4-ns">
-
         <form className="pa4 black-80">
           <div className="measure center">
             <input 
@@ -18,7 +31,6 @@ class SearchPage extends Component {
             />
           </div>
         </form>
-
       </div>
     );
   }
