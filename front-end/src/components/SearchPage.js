@@ -69,10 +69,10 @@ class SearchPage extends Component {
         </div>
 
         {searchText && 
-          <div className="bla ck-70 pa2 pa4-ns">
+          <div className="black-70 pa2 pa4-ns">
             Found {matchingCompanies.length} results.
             {matchingCompanies.map((company) =>
-              <SearchResultItem key={company.Symbol} company={company} />
+              <SearchResultItem key={company.Symbol} company={company} searchWords={[searchText]} />
             )}
           </div>
         }
