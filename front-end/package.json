@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "debounce": "^1.0.2",
+    "lunr": "^2.1.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-highlight-words": "^0.8.0"

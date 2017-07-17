@@ -2,17 +2,36 @@ import React, { Component } from 'react';
 import SearchResultItem from './SearchResultItem';
 
 import companies from '../data/companies';
+import lunr from 'lunr';
+import debounce from 'debounce';
 
 class SearchPage extends Component {
   constructor(props) {
     super(props);
+
+    let companiesBySymbol = companies.reduce((obj, item) => {
+      obj[item.Symbol] = item;
+      return obj;
+    }, {});
+
     this.state = {
       searchText: '',
       companies,
-      matchingCompanies: []
+      companiesBySymbol,
+      searchResults: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.doSearch = this.doSearch.bind(this);
+    this.doSearch = debounce(this.doSearch, 250);
+
+    this.searchIdx = lunr(function() {
+      this.ref("Symbol");
+      this.field("Name");
+      this.field("Description");
+      companies.forEach(doc => {
+        this.add(doc);
+      });
+    });
 
     /*
     this.state['searchText'] = 'test';
@@ -33,8 +52,8 @@ class SearchPage extends Component {
   }
 
   doSearch(searchText) {
-    const matchingCompanies = this.state.companies.filter(x => x.Name.includes(searchText) || x.Description.includes(searchText));
-    this.setState({matchingCompanies});
+    const searchResults = this.searchIdx.search(searchText);
+    this.setState({searchResults});
   }
 
     /*
@@ -47,7 +66,8 @@ class SearchPage extends Component {
   render() {
     const {searchText} = this.state;
 
-    const {matchingCompanies} = this.state;
+    const {searchResults, companiesBySymbol} = this.state;
+    const searchResultSymbols = searchResults.map(x => x.ref);
     //console.log({companies});
 
     return (
@@ -70,9 +90,9 @@ class SearchPage extends Component {
 
         {searchText && 
           <div className="black-70 pa2 pa4-ns">
-            Found {matchingCompanies.length} results.
-            {matchingCompanies.map((company) =>
-              <SearchResultItem key={company.Symbol} company={company} searchWords={[searchText]} />
+            Found {searchResults.length} results.
+            {searchResultSymbols.map((symbol) =>
+              <SearchResultItem key={symbol} company={companiesBySymbol[symbol]} searchWords={[searchText]} />
             )}
           </div>
         }
