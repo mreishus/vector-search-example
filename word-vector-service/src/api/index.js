@@ -1,6 +1,8 @@
 import { version } from '../../package.json';
 import { Router } from 'express';
 
+import { findSimiliar } from '../models/wordvectors';
+
 export default ({ config, db }) => {
 	let api = Router();
 
@@ -10,7 +12,10 @@ export default ({ config, db }) => {
 	});
 
 	api.get('/similar/:word', (req, res) => {
-		res.json({result: `You searched for words similar to ${req.params.word}.`});
+		res.json({
+			message: `You searched for words similar to ${req.params.word}.`,
+			result: findSimiliar(req.params.word)
+		});
 	});
 
 	return api;
