@@ -1,0 +1,25 @@
+You need this file: GoogleNews-vectors-negative300.txt
+
+1. Download GoogleNews-vectors-negative300.bin.gz from either 
+https://code.google.com/archive/p/word2vec/ 
+or https://github.com/mmihaltz/word2vec-GoogleNews-vectors (requires git-lfs).
+
+2. Unzip the file with 
+$ gunzip GoogleNews-vectors-negative300.bin.gz
+
+3.  Use https://github.com/marekrei/convertvec to convert GoogleNews-vectors-negative300.bin to GoogleNews-vectors-negative300.txt.
+$ git clone git@github.com:marekrei/convertvec.git
+$ cd convertvec
+$ make
+$ cp convertvec ../cv
+$ cd ..
+$ chmod +x cv
+$ ./cv bin2txt GoogleNews-vectors-negative300.bin GoogleNews-vectors-negative300.txt
+$ rm -rf convertvec
+
+4. You may delete the GoogleNews-vectors-negative300.bin file if you'd like.
+
+5. Now you can use make_model.rb to create a word vector model in javascript.
+
+$ ./make_model.rb 25000 > ../words25k.js
+

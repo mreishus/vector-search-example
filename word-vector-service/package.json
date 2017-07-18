@@ -10,6 +10,11 @@
     "prestart": "npm run -s build",
     "test": "eslint src"
   },
+  "babel": {
+    "ignore": [
+      "words25k.js"
+    ]
+  },
   "eslintConfig": {
     "extends": "eslint:recommended",
     "parserOptions": {

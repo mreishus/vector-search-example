@@ -1,7 +1,7 @@
 import { version } from '../../package.json';
 import { Router } from 'express';
 
-import { findSimiliar } from '../models/wordvectors';
+import { findSimiliar } from '../models/vector_funcs';
 
 export default ({ config, db }) => {
 	let api = Router();
