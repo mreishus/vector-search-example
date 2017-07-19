@@ -31,9 +31,7 @@ const dotProduct = (a, b) => {
 	if (!Array.isArray(a) || !Array.isArray(b) || a.length != b.length) {
 		throw 'invalid arguments';
 	}
-	const zippedVectors  = a.map((x, idx) => [x, b[idx]]);
-	const products = zippedVectors.map(x => x[0] * x[1]);
-	return products.reduce((acc, x) => acc + x, 0);
+	return a.reduce((acc, x, idx) => acc + (x * b[idx]), 0);
 }
 
 const magnitude = a => Math.sqrt(dotProduct(a, a));
