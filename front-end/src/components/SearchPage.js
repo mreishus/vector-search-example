@@ -16,13 +16,16 @@ class SearchPage extends Component {
 
     this.state = {
       searchText: '',
+      searchTextExpanded: '',
       companies,
       companiesBySymbol,
-      searchResults: []
+      searchResults: [],
+      similarWordsFor: {},
     };
     this.handleChange = this.handleChange.bind(this);
     this.doSearch = this.doSearch.bind(this);
     this.doSearch = debounce(this.doSearch, 250);
+    this.requestSimilarWords = this.requestSimilarWords.bind(this);
 
     this.searchIdx = lunr(function() {
       this.ref("Symbol");
@@ -47,13 +50,62 @@ class SearchPage extends Component {
 
   handleChange(event) {
     const searchText = event.target.value;
-    this.setState({searchText});
-    this.doSearch(searchText);
+    this.setState({searchText}, () => {
+      console.log('aaa');
+      this.doSearch();
+    });
   }
 
-  doSearch(searchText) {
-    const searchResults = this.searchIdx.search(searchText);
+  doSearch() {
+    const {searchText, similarWordsFor} = this.state;
+
+    // First - Queue up any similar word lookups needed.
+    const searchWords = searchText.match(/\S+/g) || [];
+    const searchWordsToLookUp = searchWords.filter(word => !similarWordsFor.hasOwnProperty(word));
+    for (const word of searchWordsToLookUp) {
+      this.requestSimilarWords(word);
+    }
+
+    // Second - expand the searchText by adding all similar words.
+    let wordsSimiliarToSearch = [];
+    const searchWordsLookedUp = searchWords.filter(word => similarWordsFor[word]);
+    for (const word of searchWordsLookedUp) {
+      wordsSimiliarToSearch = wordsSimiliarToSearch.concat( similarWordsFor[word].map(x => x.word) );
+    }
+
+    // Third - save the expanded searchText and do the actual search.
+    const searchTextExpanded = (searchText + " " + wordsSimiliarToSearch.join(" ")).trim();
+    this.setState({searchTextExpanded}, () => this.doSearchFinal());
+  }
+
+  doSearchFinal() {
+    const {searchTextExpanded} = this.state;
+    const searchResults = this.searchIdx.search(searchTextExpanded);
     this.setState({searchResults});
+  }
+
+  requestSimilarWords(word) {
+    // Set the result to false so we don't queue up multiple lookups while the first is running
+    this.setState({similarWordsFor: {
+      ...this.state.similarWordsFor, [word]: false
+    }});
+
+    fetch('http://192.168.1.174:5555/api/similar/' + encodeURIComponent(word)) 
+      .then((resp) => {
+        if (resp.status !== 200) {
+          throw new Error("Api broke :(");
+        }
+        return resp.json();
+      })
+      .then((data) => {
+        if (data.result && Array.isArray(data.result) && data.result.length > 0) {
+          this.setState({similarWordsFor: {
+            ...this.state.similarWordsFor, [word]: data.result
+          }});
+          this.doSearch();
+        }
+        // If there's no result, we already recorded the result as 'false' above
+      });
   }
 
     /*
@@ -64,13 +116,12 @@ class SearchPage extends Component {
     */
 
   render() {
-    const {searchText} = this.state;
+    const {searchText, searchTextExpanded} = this.state;
 
     const {searchResults, companiesBySymbol} = this.state;
     const searchResultSymbols = searchResults.map(x => x.ref);
-    //console.log({companies});
 
-    const searchWords = searchText.match(/\S+/g) || [];
+    const searchWords = searchTextExpanded.match(/\S+/g) || [];
 
     return (
       <div>
@@ -86,9 +137,11 @@ class SearchPage extends Component {
                 placeholder="search..."
                 className="input-reset f3 ba b--black-20 pa2 mb2 db w-100"
               />
+              <div>{searchTextExpanded}</div>
             </div>
           </form>
         </div>
+
 
         {searchText && 
           <div className="black-70 pa2 pa4-ns">

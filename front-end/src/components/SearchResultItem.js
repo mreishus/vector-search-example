@@ -11,14 +11,18 @@ class SearchResultItem extends Component {
 
   render() {
     const {company, searchWords} = this.props;
-    const {hover} = this.state;
+    //const {hover} = this.state;
+    const hover = true;
     return (
       <div className="tl ba pa2 pa3-ns ma2 ma3-ns bg-light-green black measure-wide"
         onMouseOver={() => this.setState({ hover: true })} 
         onMouseOut={() => this.setState({ hover: false })}
       >
         <div className="f3 mb2">
-          {company.Name}
+          <Highlighter
+            searchWords={searchWords}
+            textToHighlight={company.Name}
+          />
         </div>
         <p className="f5 measure-wide lh-copy">
           { hover &&

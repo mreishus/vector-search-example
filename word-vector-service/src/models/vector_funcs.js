@@ -11,7 +11,7 @@ const vectors = {
 };
 */
 
-export const findSimiliar = (word, threshold = 0.6, maxResults = 25) => {
+export const findSimiliar = (word, threshold = 0.45, maxResults = 50) => {
 	if (!(word in vectors)) { return []; }
 
 	let results = [];
