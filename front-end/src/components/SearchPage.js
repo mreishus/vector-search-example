@@ -70,6 +70,8 @@ class SearchPage extends Component {
     const searchResultSymbols = searchResults.map(x => x.ref);
     //console.log({companies});
 
+    const searchWords = searchText.match(/\S+/g) || [];
+
     return (
       <div>
 
@@ -92,7 +94,7 @@ class SearchPage extends Component {
           <div className="black-70 pa2 pa4-ns">
             Found {searchResults.length} results.
             {searchResultSymbols.map((symbol) =>
-              <SearchResultItem key={symbol} company={companiesBySymbol[symbol]} searchWords={[searchText]} />
+              <SearchResultItem key={symbol} company={companiesBySymbol[symbol]} searchWords={searchWords} />
             )}
           </div>
         }
