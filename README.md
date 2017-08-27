@@ -16,3 +16,7 @@ Open two terminals.
 ## More Info
 
 I walk through the creation of this in a series of blog posts here: https://matthewreishus.com/post/2017-07-21-word-vector-all-posts/
+
+## Screenshot
+
+![Screenshot](https://raw.githubusercontent.com/mreishus/vector-search-example/master/screenshot.png)
