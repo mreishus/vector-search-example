@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import SearchResultItem from "./SearchResultItem";
+import SearchTextExpanded from "./SearchTextExpanded";
 
 import companies from "../data/companies";
 import lunr from "lunr";
@@ -202,7 +203,7 @@ class SearchPage extends Component {
               </article>
               */}
 
-              <div>{searchTextExpanded}</div>
+              <SearchTextExpanded searchTextExpanded={searchTextExpanded} />
             </div>
           </form>
         </div>
