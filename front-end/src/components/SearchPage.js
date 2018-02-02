@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from "react";
 import SearchResultItem from "./SearchResultItem";
 import SearchTextExpanded from "./SearchTextExpanded";
@@ -6,9 +7,50 @@ import companies from "../data/companies";
 import lunr from "lunr";
 import debounce from "debounce";
 
-// Takes no props.
+type Company = {
+  Symbol: string,
+  Name: string,
+  Sector: string,
+  Description: string
+};
 
-class SearchPage extends Component {
+type SearchResult = {
+  ref: string, // Company Symbol
+  score: number,
+  matchData: any
+};
+
+type SimiliarWordResult = {
+  word: string,
+  similarity: number
+};
+
+// Takes no props.
+type Props = {};
+type State = {
+  searchText: string,
+  searchTextExpanded: string,
+  companies: Array<Company>,
+  companiesBySymbol: { [symbol: string]: Company },
+  searchResults: Array<SearchResult>,
+  similarWordsFor: { [word: string]: Array<SimiliarWordResult> },
+  isWordApiError: boolean,
+  wordApiUrl: string
+};
+
+class SearchPage extends Component<Props, State> {
+  // This junk needed by flow for binding statements,
+  // can be cleaned up if moved to transform-class-properties
+  // arrow notation
+  doSearch: Function;
+  handleApiChange: Function;
+  handleSearchChange: Function;
+  requestSimilarWords: Function;
+  resetSearch: Function;
+  searchIdx: any; // Lunr
+
+  inputSearch: ?HTMLInputElement;
+
   constructor() {
     super();
 
@@ -25,8 +67,8 @@ class SearchPage extends Component {
       searchResults: [], // [{ref: string, score: double, matchData: ?}, ..].  The ref here is the company Symbol.
       similarWordsFor: {}, // {string => Array(string), ...}, representing similiar words found from service
       isWordApiError: false, // Did we come across an error looking up the API?
-      wordApiUrl: "http://192.168.1.174:5555/api/similar/",
-      wordApiUrlDefault: "http://127.0.0.1:8080/api/similar/"
+      wordApiUrl: "http://192.168.1.174:5555/api/similar/"
+      //wordApiUrlDefault: "http://127.0.0.1:8080/api/similar/"
     };
 
     // We build the search index when the component is first mounted.
@@ -40,20 +82,23 @@ class SearchPage extends Component {
     });
 
     // Binds, would prefer to replace with transform-class-properties and arrow functions
-    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.doSearch = this.doSearch.bind(this);
     this.handleApiChange = this.handleApiChange.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
     this.requestSimilarWords = this.requestSimilarWords.bind(this);
     this.resetSearch = this.resetSearch.bind(this);
-    this.doSearch = this.doSearch.bind(this);
+    // Debounce
     this.doSearch = debounce(this.doSearch, 250);
   }
 
   componentDidMount() {
-    this.inputSearch.focus();
+    if (this.inputSearch != null) {
+      this.inputSearch.focus();
+    }
   }
 
   // User typed into search box
-  handleSearchChange(event) {
+  handleSearchChange(event: SyntheticInputEvent<HTMLInputElement>) {
     const searchText = event.target.value;
     this.setState({ searchText }, () => {
       this.doSearch();
@@ -61,7 +106,7 @@ class SearchPage extends Component {
   }
 
   // User typed into API address box
-  handleApiChange(event) {
+  handleApiChange(event: SyntheticInputEvent<HTMLInputElement>) {
     this.setState({ wordApiUrl: event.target.value });
   }
 
@@ -117,7 +162,7 @@ class SearchPage extends Component {
   }
 
   // Kick off an API request for a similar word.
-  requestSimilarWords(word) {
+  requestSimilarWords(word: string) {
     const { wordApiUrl } = this.state;
     // Set the result for this word to false, so we don't queue up multiple lookups while the first is running
     this.setState({
@@ -189,20 +234,6 @@ class SearchPage extends Component {
                 placeholder="search..."
                 className="input-reset f3 ba b--black-20 pa2 mb2 db w-100 br3"
               />
-
-              {/*
-              <article class="center mw5 mw6-ns hidden ba mv4">
-                <h1 class="f4 bg-near-black white mv0 pv2 ph3">
-                  test
-                </h1>
-                <div class="pa3 bt">
-                  <p class="f6 f5-ns lh-copy measure mv0">
-                    {searchTextExpanded}
-                  </p>
-                </div>
-              </article>
-              */}
-
               <SearchTextExpanded searchTextExpanded={searchTextExpanded} />
             </div>
           </form>

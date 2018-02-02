@@ -1,7 +1,16 @@
+// @flow
 import React, { Component } from "react";
 import Highlighter from "react-highlight-words";
 
-class SearchResultItem extends Component {
+type Props = {
+  company: any,
+  searchWords: Array<string>
+};
+type State = {
+  hover: boolean
+};
+
+class SearchResultItem extends Component<Props, State> {
   constructor() {
     super();
     this.state = {
@@ -11,8 +20,9 @@ class SearchResultItem extends Component {
 
   render() {
     const { company, searchWords } = this.props;
-    //const {hover} = this.state;
-    const hover = true;
+
+    const hover = true; // For now, let's disable the hover-to-hightlight function
+
     return (
       <div
         className="tl ba pa2 pa3-ns ma2 ma3-ns bg-light-green black measure-wide br3"

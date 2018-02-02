@@ -1,7 +1,8 @@
-import React from 'react';
-import '../App.css';
-import Header from './Header';
-import SearchPage from './SearchPage';
+// @flow
+import React from "react";
+import "../App.css";
+import Header from "./Header";
+import SearchPage from "./SearchPage";
 
 const App = () => (
   <div>
