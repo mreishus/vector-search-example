@@ -5,6 +5,7 @@ const Header = () => (
     <h1 className="f4 fw6 f1-ns lh-title measure mt0 mb0">
       Search
     </h1>
+    Search the company names and descriptions of S&amp;P500 companies, powered with a conceptual search.
   </div>
 );
 
