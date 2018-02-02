@@ -2,17 +2,18 @@
   "name": "front-end",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "/vector-apps/part1/",
+  "homepage": "/vector-apps/part1/",
   "dependencies": {
-    "debounce": "^1.0.2",
-    "lunr": "^2.1.2",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-highlight-words": "^0.8.0"
+    "debounce": "^1.1.0",
+    "lunr": "^2.1.5",
+    "prettier": "^1.10.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-highlight-words": "^0.10.0"
   },
   "devDependencies": {
-    "react-scripts": "1.0.10",
-    "tachyons": "^4.7.4"
+    "react-scripts": "^1.1.0",
+    "tachyons": "^4.9.1"
   },
   "scripts": {
     "start": "react-scripts start",
