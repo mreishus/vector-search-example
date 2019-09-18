@@ -67,8 +67,8 @@ class SearchPage extends Component<Props, State> {
       searchResults: [], // [{ref: string, score: double, matchData: ?}, ..].  The ref here is the company Symbol.
       similarWordsFor: {}, // {string => Array(string), ...}, representing similiar words found from service
       isWordApiError: false, // Did we come across an error looking up the API?
-      wordApiUrl: "http://192.168.1.174:5555/api/similar/"
-      //wordApiUrlDefault: "http://127.0.0.1:8080/api/similar/"
+      //wordApiUrl: "http://192.168.1.174:5555/api/similar/"
+      wordApiUrl: "http://127.0.0.1:8080/api/similar/"
     };
 
     // We build the search index when the component is first mounted.
