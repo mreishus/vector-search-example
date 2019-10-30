@@ -8,7 +8,7 @@
     "lunr": "^2.1.5",
     "prettier": "^1.10.2",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.11.0",
     "react-highlight-words": "^0.10.0"
   },
   "devDependencies": {
