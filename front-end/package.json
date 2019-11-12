@@ -12,7 +12,7 @@
     "react-highlight-words": "^0.16.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.111.3",
+    "flow-bin": "^0.112.0",
     "react-scripts": "^3.2.0",
     "tachyons": "^4.9.1"
   },
