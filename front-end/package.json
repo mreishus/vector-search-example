@@ -6,7 +6,7 @@
   "dependencies": {
     "debounce": "^1.2.0",
     "lunr": "^2.3.8",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-highlight-words": "^0.16.0"
