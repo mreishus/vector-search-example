@@ -5,7 +5,7 @@
   "homepage": "/vector-apps/part1/",
   "dependencies": {
     "debounce": "^1.2.0",
-    "lunr": "^2.3.8",
+    "lunr": "^2.3.9",
     "prettier": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
